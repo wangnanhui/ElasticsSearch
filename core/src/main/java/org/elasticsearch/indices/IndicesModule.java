@@ -89,7 +89,7 @@ public class IndicesModule extends AbstractModule {
         return namedWritables;
     }
 
-    private Map<String, Mapper.TypeParser> getMappers(List<MapperPlugin> mapperPlugins) {
+    private Map<String, Mapper.TypeParser> getMappers(List<MapperPlugin> mapperPlugins) {//Ë÷Òı×Ö¶ÎÀàĞÍ 
         Map<String, Mapper.TypeParser> mappers = new LinkedHashMap<>();
 
         // builtin mappers

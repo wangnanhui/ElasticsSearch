@@ -55,7 +55,7 @@ package org.elasticsearch.common.component;
  */
 public class Lifecycle {
 
-    public enum State {
+    public enum State {//LifeCycle ´æ´¢½áµãµÄ×´Ì¬
         INITIALIZED,
         STOPPED,
         STARTED,

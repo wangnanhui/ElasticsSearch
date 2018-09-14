@@ -57,7 +57,7 @@ public class SettingsModule implements Module {
         this(settings, Arrays.asList(additionalSettings), Collections.emptyList());
     }
 
-    public SettingsModule(Settings settings, List<Setting<?>> additionalSettings, List<String> settingsFilter) {
+    public SettingsModule(Settings settings, List<Setting<?>> additionalSettings, List<String> settingsFilter) {//集群允许的操作
         logger = Loggers.getLogger(getClass(), settings);
         this.settings = settings;
         for (Setting<?> setting : ClusterSettings.BUILT_IN_CLUSTER_SETTINGS) {

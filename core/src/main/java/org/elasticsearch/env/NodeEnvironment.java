@@ -154,7 +154,7 @@ public final class NodeEnvironment  implements Closeable {
      * Maximum number of data nodes that should run in an environment.
      */
     public static final Setting<Integer> MAX_LOCAL_STORAGE_NODES_SETTING = Setting.intSetting("node.max_local_storage_nodes", 1, 1,
-        Property.NodeScope);
+        Property.NodeScope);//一个环境节点中 最多只能有一个数据节点
 
     /**
      * Seed for determining a persisted unique uuid of this node. If the node has already a persisted uuid on disk,
@@ -201,12 +201,12 @@ public final class NodeEnvironment  implements Closeable {
                 for (int dirIndex = 0; dirIndex < environment.dataFiles().length; dirIndex++) {
                     Path dataDir = environment.dataFiles()[dirIndex];
                     Path dir = resolveNodePath(dataDir, possibleLockId);
-                    Files.createDirectories(dir);
+                    Files.createDirectories(dir);//生成node文件路径
 
-                    try (Directory luceneDir = FSDirectory.open(dir, NativeFSLockFactory.INSTANCE)) {
+                    try (Directory luceneDir = FSDirectory.open(dir, NativeFSLockFactory.INSTANCE)) {//lucene的fsd出来了  后面是一个锁就是给当前索引加锁 目的是为了保证线程 安全依赖java.nio.*进行加锁，FSDirectory的默认锁，不适合NFS使用，该类的最大好处是JVM异常退出的话，由OS负责移除write.lock，OS并不真的删除该文件，但是会释放该文件上的所有引用，确保下次可以重新获取锁   数据量少的时候我是不是可以改成RAMD？
                         startupTraceLogger.trace("obtaining node lock on {} ...", dir.toAbsolutePath());
                         try {
-                            locks[dirIndex] = luceneDir.obtainLock(NODE_LOCK_FILENAME);
+                            locks[dirIndex] = luceneDir.obtainLock(NODE_LOCK_FILENAME);//生成了一个node.lock 文件 作用类似于write.lock 具体怎么用还不清楚
                             nodePaths[dirIndex] = new NodePath(dir);
                             nodeLockId = possibleLockId;
                         } catch (LockObtainFailedException ex) {
@@ -243,7 +243,7 @@ public final class NodeEnvironment  implements Closeable {
                     maxLocalStorageNodes);
                 throw new IllegalStateException(message, lastException);
             }
-            this.nodeMetaData = loadOrCreateNodeMetaData(settings, startupTraceLogger, nodePaths);
+            this.nodeMetaData = loadOrCreateNodeMetaData(settings, startupTraceLogger, nodePaths);//写入_state文件 
             this.logger = Loggers.getLogger(getClass(), Node.addNodeNameIfNeeded(settings, this.nodeMetaData.nodeId()));
 
             this.nodeLockId = nodeLockId;

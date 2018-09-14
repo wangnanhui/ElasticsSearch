@@ -195,7 +195,7 @@ public class NodeConnectionsService extends AbstractLifecycleComponent {
 
     @Override
     protected void doStart() {
-        backgroundFuture = threadPool.schedule(reconnectInterval, ThreadPool.Names.GENERIC, new ConnectionChecker());
+        backgroundFuture = threadPool.schedule(reconnectInterval, ThreadPool.Names.GENERIC, new ConnectionChecker());//发现节点 需要细看一下
     }
 
     @Override

@@ -323,7 +323,7 @@ public class PluginsService extends AbstractComponent {
 
         Set<Bundle> bundles = new LinkedHashSet<>();
 
-        checkForFailedPluginRemovals(pluginsDirectory);
+        checkForFailedPluginRemovals(pluginsDirectory);//检查是否有已经标记为remove的插件
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(pluginsDirectory)) {
             for (Path plugin : stream) {

@@ -90,7 +90,7 @@ public class PublishClusterStateAction extends AbstractComponent {
     private final IncomingClusterStateListener incomingClusterStateListener;
     private final DiscoverySettings discoverySettings;
 
-    public PublishClusterStateAction(
+    public PublishClusterStateAction(//看到这里了  真绕 
             Settings settings,
             TransportService transportService,
             NamedWriteableRegistry namedWriteableRegistry,

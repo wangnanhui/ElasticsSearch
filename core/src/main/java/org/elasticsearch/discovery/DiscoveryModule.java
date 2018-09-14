@@ -67,9 +67,10 @@ public class DiscoveryModule {
                            ClusterApplier clusterApplier, ClusterSettings clusterSettings, List<DiscoveryPlugin> plugins,
                            AllocationService allocationService) {
         final UnicastHostsProvider hostsProvider;
-        final Collection<BiConsumer<DiscoveryNode,ClusterState>> joinValidators = new ArrayList<>();
+        final Collection<BiConsumer<DiscoveryNode,ClusterState>> joinValidators = new ArrayList<>();//存储发现的节点和节点的状态
         Map<String, Supplier<UnicastHostsProvider>> hostProviders = new HashMap<>();
         for (DiscoveryPlugin plugin : plugins) {
+        	
             plugin.getZenHostsProviders(transportService, networkService).entrySet().forEach(entry -> {
                 if (hostProviders.put(entry.getKey(), entry.getValue()) != null) {
                     throw new IllegalArgumentException("Cannot register zen hosts provider [" + entry.getKey() + "] twice");

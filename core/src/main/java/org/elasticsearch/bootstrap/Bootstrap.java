@@ -163,12 +163,12 @@ final class Bootstrap {
         Settings settings = environment.settings();
 
         try {
-            spawner.spawnNativePluginControllers(environment);
+            spawner.spawnNativePluginControllers(environment);//设置plguin(插件)的controller
         } catch (IOException e) {
             throw new BootstrapException(e);
         }
 
-        initializeNatives(
+        initializeNatives(//初始化本地配置  如是否锁定内存 是否是root用户等等
                 environment.tmpFile(),
                 BootstrapSettings.MEMORY_LOCK_SETTING.get(settings),
                 BootstrapSettings.SYSTEM_CALL_FILTER_SETTING.get(settings),
@@ -177,7 +177,7 @@ final class Bootstrap {
         // initialize probes before the security manager is installed
         initializeProbes();
 
-        if (addShutdownHook) {
+        if (addShutdownHook) {//当程序异常退出处理方法 程序正常退出 使用System.exit() 终端使用Ctrl+C触发的中断 系统关闭 OutOfMemory宕机 使用Kill pid命令干掉进程（注：在使用kill -9 pid时，是不会被调用的）
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
@@ -209,7 +209,7 @@ final class Bootstrap {
             throw new BootstrapException(e);
         }
 
-        node = new Node(environment) {
+        node = new Node(environment) {//关键部分 
             @Override
             protected void validateNodeBeforeAcceptingRequests(
                 final BootstrapContext context,
@@ -280,7 +280,7 @@ final class Bootstrap {
             final Environment initialEnv) throws BootstrapException, NodeValidationException, UserException {
         // force the class initializer for BootstrapInfo to run before
         // the security manager is installed
-        BootstrapInfo.init();
+        BootstrapInfo.init();//
 
         INSTANCE = new Bootstrap();
 
@@ -311,13 +311,13 @@ final class Bootstrap {
             }
 
             // fail if somebody replaced the lucene jars
-            checkLucene();
+            checkLucene();//检查lucene版本和es版本是否匹配
 
             // install the default uncaught exception handler; must be done before security is
             // initialized as we do not want to grant the runtime permission
             // setDefaultUncaughtExceptionHandler
             Thread.setDefaultUncaughtExceptionHandler(
-                new ElasticsearchUncaughtExceptionHandler(() -> Node.NODE_NAME_SETTING.get(environment.settings())));
+                new ElasticsearchUncaughtExceptionHandler(() -> Node.NODE_NAME_SETTING.get(environment.settings())));//设置默认的异常
 
             INSTANCE.setup(true, environment);
 

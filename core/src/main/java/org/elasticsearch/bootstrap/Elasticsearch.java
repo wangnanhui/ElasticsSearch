@@ -113,7 +113,7 @@ class Elasticsearch extends EnvironmentAwareCommand {
             return;
         }
 
-        final boolean daemonize = options.has(daemonizeOption);
+        final boolean daemonize = options.has(daemonizeOption);//是否有守护线程
         final Path pidFile = pidfileOption.value(options);
         final boolean quiet = options.has(quietOption);
 

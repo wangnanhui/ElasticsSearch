@@ -82,7 +82,7 @@ public class InternalSettingsPreparer {
         // just create enough settings to build the environment, to get the config dir
         Settings.Builder output = Settings.builder();
         initializeSettings(output, input, properties);
-        Environment environment = new Environment(output.build(), configPath);
+        Environment environment = new Environment(output.build(), configPath);//默认环境
 
         if (Files.exists(environment.configFile().resolve("elasticsearch.yaml"))) {
             throw new SettingsException("elasticsearch.yaml was deprecated in 5.5.0 and must be renamed to elasticsearch.yml");
@@ -93,7 +93,7 @@ public class InternalSettingsPreparer {
         }
 
         output = Settings.builder(); // start with a fresh output
-        Path path = environment.configFile().resolve("elasticsearch.yml");
+        Path path = environment.configFile().resolve("elasticsearch.yml");//判断是否使用用户的自定义配置文件
         if (Files.exists(path)) {
             try {
                 output.loadFromPath(path);
@@ -105,9 +105,9 @@ public class InternalSettingsPreparer {
         // re-initialize settings now that the config file has been loaded
         initializeSettings(output, input, properties);
         finalizeSettings(output, terminal);
+        //添加用户自定义配置文件 并刷新环境 至于为什么三次初始化environment 我认为第一次为默认环境 第二次为加载用户自定义 初始化的时候会检查错误 如果没有错误会进行第三次环境加载 其中会加入日志的配置
 
         environment = new Environment(output.build(), configPath);
-
         // we put back the path.logs so we can use it in the logging configuration file
         output.put(Environment.PATH_LOGS_SETTING.getKey(), environment.logsFile().toAbsolutePath().normalize().toString());
         return new Environment(output.build(), configPath);

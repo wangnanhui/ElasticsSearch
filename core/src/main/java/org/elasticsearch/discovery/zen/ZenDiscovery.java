@@ -255,7 +255,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
             assert localNode != null;
             ClusterState.Builder builder = clusterApplier.newClusterStateBuilder();
             ClusterState initialState = builder
-                .blocks(ClusterBlocks.builder()
+                .blocks(ClusterBlocks.builder()//添加block 也就是分片了
                     .addGlobalBlock(STATE_NOT_RECOVERED_BLOCK)
                     .addGlobalBlock(discoverySettings.getNoMasterBlock()))
                 .nodes(DiscoveryNodes.builder().add(localNode).localNodeId(localNode.getId()))
@@ -481,7 +481,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
             nodeJoinController.stopElectionContext(masterNode + " elected");
 
             // send join request
-            final boolean success = joinElectedMaster(masterNode);
+            final boolean success = joinElectedMaster(masterNode);//重点
 
             synchronized (stateMutex) {
                 if (success) {
