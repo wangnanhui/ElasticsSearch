@@ -33,6 +33,11 @@ import org.gradle.util.DistributionLocator
 import java.nio.file.Path
 import java.security.MessageDigest
 
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
 // common maven publishing configuration
 subprojects {
   group = 'org.elasticsearch'
